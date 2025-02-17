@@ -1,16 +1,20 @@
-# تحديث الكود ليشمل الترحيب عند /start ومنع السب ومنع الصور
-bot_code_updated = """\
+# تحديث المجلد لحفظ الملفات الجديدة
+shutil.os.makedirs(base_path, exist_ok=True)
+
+# تحديث bot.py لحماية المفاتيح باستخدام Environment Variables
+bot_code_secure = """\
 import telebot
 import requests
 import openai
+import os
 
 # ===== إعدادات البوت =====
-TOKEN = "ضع_توكن_البوت_هنا"  # توكن البوت من BotFather
+TOKEN = os.getenv("BOT_TOKEN")
 bot = telebot.TeleBot(TOKEN)
 
 # ===== مفاتيح API =====
-DEEPAI_API_KEY = "ضع_مفتاح_DeepAI_هنا"  # مفتاح DeepAI لتحليل الصور
-OPENAI_API_KEY = "ضع_مفتاح_OpenAI_هنا"  # مفتاح OpenAI لتحليل النصوص
+DEEPAI_API_KEY = os.getenv("DEEPAI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
 # ===== أيدي المطور =====
@@ -104,8 +108,8 @@ print("🚀 البوت يعمل الآن...")
 bot.infinity_polling()
 """
 
-# تحديث ملف README.md ليشمل معلومات الترحيب ومنع السب والصور
-readme_updated = """\
+# تحديث ملف README.md
+readme_secure = """\
 # بوت مراقبة التليجرام 🚀
 
 ## **🔹 المميزات:**
@@ -113,3 +117,28 @@ readme_updated = """\
 ✅ **تحليل الصور ومنع الصور غير اللائقة** باستخدام **DeepAI**.  
 ✅ **إرسال تقرير للمطور عند اكتشاف أي محتوى مشبوه**.  
 ✅ **إرسال رسالة ترحيب عند كتابة `/start`**.  
+
+## **🔧 كيفية التشغيل على Render:**
+1. **ارفع الملفات إلى GitHub**.
+2. **أنشئ خدمة جديدة على [Render](https://render.com/)**.
+3. **أضف المتغيرات البيئية (Environment Variables) في Render:**
+   - `BOT_TOKEN` = `توكن البوت`
+   - `DEEPAI_API_KEY` = `مفتاح DeepAI`
+   - `OPENAI_API_KEY` = `مفتاح OpenAI`
+4. **بعد الإعداد، سيعمل البوت تلقائيًا! 🚀**
+
+"""
+
+# حفظ الملفات الجديدة
+with open(base_path + "bot.py", "w", encoding="utf-8") as f:
+    f.write(bot_code_secure)
+
+with open(base_path + "README.md", "w", encoding="utf-8") as f:
+    f.write(readme_secure)
+
+# ضغط الملفات الجديدة في ملف ZIP
+secure_zip_path = "/mnt/data/telegram_bot_secure.zip"
+shutil.make_archive(secure_zip_path.replace(".zip", ""), 'zip', base_path)
+
+# إرجاع رابط التنزيل
+secure_zip_path
