@@ -1,13 +1,12 @@
-# تحديث المجلد لحفظ الملفات الجديدة
-shutil.os.makedirs(base_path, exist_ok=True)
-
-# تحديث bot.py لحماية المفاتيح باستخدام Environment Variables
-bot_code_secure = """\
 import os
-import shutil
+import shutil  # ✅ تأكد من أن الاستيراد يأتي أولًا!
 import telebot
 import requests
 import openai
+
+# ===== إعداد المجلد لحفظ الملفات الجديدة =====
+shutil.os.makedirs("your_directory_path", exist_ok=True)  # استبدل المسار المناسب
+
 
 # ===== إعدادات البوت =====
 TOKEN = os.getenv("BOT_TOKEN")
