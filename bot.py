@@ -5,7 +5,9 @@ import openai
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # ===== إعدادات البوت =====
-TOKEN = os.getenv("BOT_TOKEN")
+TOKEN = os.getenv("BOT_TOKEN", "").strip()
+if not TOKEN:
+    raise ValueError("🚨 خطأ: لم يتم العثور على توكن البوت! تأكد من ضبط المتغير البيئي BOT_TOKEN في Render.")
 bot = telebot.TeleBot(TOKEN)
 
 # ===== مفاتيح API =====
@@ -108,3 +110,4 @@ def handle_photos(message):
 # ===== تشغيل البوت =====
 print("🚀 البوت يعمل الآن...")
 bot.infinity_polling()
+
